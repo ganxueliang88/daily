@@ -1,0 +1,22 @@
+name: 'daily'
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * *'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: install dependencies
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: run the script
+        run: |
+          python3 main.py
+
