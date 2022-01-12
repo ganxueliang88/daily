@@ -60,7 +60,7 @@ def get_login(username, password, recaptcha) -> str:
     }
 
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-    #print(response.text)
+    # print(response.text)
     if (response.status_code != 200):
         print("login err")
         exit(-1)
@@ -105,20 +105,20 @@ def wave(acc: str):
     print(response.text)
 
 
-def do_daily(config_file: str):
-    with open(config_file) as config_file:
-        config = json.load(config_file)
-        api_key = config["2captcha_apikey"]
-        if "melos" not in config.keys():
-            return
-        for user in config['melos']:
-            recaptcha = get_recaptcha(api_key)
-            time.sleep(1)
-            username = user["username"]
-            password = user["password"]
-            acc = get_login(username, password, recaptcha)
-            wave(acc)
+def do_daily(config):
+    api_key = config["2captcha_apikey"]
+    if "melos" not in config.keys():
+        return
+    for user in config['melos']:
+        recaptcha = get_recaptcha(api_key)
+        time.sleep(1)
+        username = user["username"]
+        password = user["password"]
+        acc = get_login(username, password, recaptcha)
+        wave(acc)
 
 
 if __name__ == "__main__":
-    do_daily("../config/config_self.json")
+    with open("../config/config_self.json") as config_file:
+        config = json.load(config_file)
+        do_daily(config)
