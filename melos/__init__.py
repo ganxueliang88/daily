@@ -60,7 +60,7 @@ def get_login(username, password, recaptcha) -> str:
     }
 
     response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
-    print(response.text)
+    #print(response.text)
     if (response.status_code != 200):
         print("login err")
         exit(-1)
@@ -109,7 +109,6 @@ def do_daily(config_file: str):
     with open(config_file) as config_file:
         config = json.load(config_file)
         api_key = config["2captcha_apikey"]
-        print(api_key)
         if "melos" not in config.keys():
             return
         for user in config['melos']:
@@ -117,7 +116,6 @@ def do_daily(config_file: str):
             time.sleep(1)
             username = user["username"]
             password = user["password"]
-            print(username, password)
             acc = get_login(username, password, recaptcha)
             wave(acc)
 
