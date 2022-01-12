@@ -1,0 +1,9 @@
+{
+  "2captcha_apikey": "your_2captcha_api_ey",
+  "melos": [
+    {
+      "username": "your_melos_username",
+      "password": "your_melos_password"
+    }
+  ]
+}
