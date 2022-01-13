@@ -8,7 +8,7 @@ user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 solver = None
 
 
-def get_recaptcha(api_key: str) -> str:
+def get_recaptcha(api_key: str) -> dict:
     global solver
     solver = TwoCaptcha(api_key)
 

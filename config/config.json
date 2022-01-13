@@ -5,5 +5,9 @@
       "username": "your_melos_username",
       "password": "your_melos_password"
     }
-  ]
+  ],
+  "bsc_test": {
+    "eth": "your_eth_address",
+    "coin": "BTC"
+  }
 }
