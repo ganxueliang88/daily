@@ -69,7 +69,7 @@ def get_login(username, password, recaptcha) -> str:
         print("login err")
         if ("Recaptcha error" in data):
             solver.report(recaptcha["captchaId"], False)
-        exit(-1)
+        return ""
     solver.report(recaptcha["captchaId"], True)
     return data["data"]["loginByEmail"]["acc"]
 
@@ -110,11 +110,19 @@ def do_daily(config):
     if "melos" not in config.keys():
         return
     for user in config['melos']:
-        recaptcha = get_recaptcha(api_key)
-        time.sleep(1)
-        username = user["username"]
-        password = user["password"]
-        acc = get_login(username, password, recaptcha)
+        acc = ""
+        for i in range(10):
+            recaptcha = get_recaptcha(api_key)
+            time.sleep(1)
+            username = user["username"]
+            password = user["password"]
+            acc = get_login(username, password, recaptcha)
+            if acc != "":
+                break
+            else:
+                time.sleep(30)
+        if acc == "":
+            continue
         wave(acc)
 
 
