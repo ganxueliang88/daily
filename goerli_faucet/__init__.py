@@ -33,31 +33,35 @@ def faucet(url, tier, captcha):
     ws = create_connection("wss://faucet.goerli.mudit.blog/api")
     request = {
         "url": url,
-        "tier": tier,# 0:1eth/day, 1:2.5eth/3day,2:6.25/9day
+        "tier": tier,  # 0:1eth/day, 1:2.5eth/3day,2:6.25/9day
         "captcha": captcha['code']
     }
 
-    print("Sending...")
-    ws.send(json.dumps(request))
-    print("Receiving...")
-    for i in range(20):
-        result = ws.recv()
-        print(result)
-        result = json.loads(result)
-        if "error" in result.keys():
-            print(result["error"])
-            if "you're a robot" in result["error"]:
-                solver.report(captcha["captchaId"], False)
-            else:
+    try:
+        print("Sending...")
+        ws.send(json.dumps(request))
+        print("Receiving...")
+        for i in range(20):
+            result = ws.recv()
+            print(result)
+            result = json.loads(result)
+            if "error" in result.keys():
+                print(result["error"])
+                if "you're a robot" in result["error"]:
+                    solver.report(captcha["captchaId"], False)
+                else:
+                    solver.report(captcha["captchaId"], True)
+                break
+            elif "success" in result.keys():
                 solver.report(captcha["captchaId"], True)
-            break
-        elif "success" in result.keys():
-            solver.report(captcha["captchaId"], True)
-            break
+                break
+    except Exception as e:
+        print(e)
     ws.close()
 
 
 def do_daily(config):
+    print("goerlibsc test faucet:")
     if "goerli" not in config.keys():
         return
     api_key = config["2captcha_apikey"]

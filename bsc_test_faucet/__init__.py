@@ -59,6 +59,7 @@ def faucet(address, coin, captcha):
 
 
 def do_daily(config):
+    print("bsc test faucet:")
     if "bsc_test" not in config.keys():
         return
     api_key = config["2captcha_apikey"]

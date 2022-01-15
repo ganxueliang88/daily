@@ -106,6 +106,7 @@ def wave(acc: str):
 
 
 def do_daily(config):
+    print("melos:")
     api_key = config["2captcha_apikey"]
     if "melos" not in config.keys():
         return

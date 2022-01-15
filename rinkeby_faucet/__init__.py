@@ -30,34 +30,38 @@ def get_recaptcha(api_key: str) -> dict:
 
 
 def faucet(url, tier, captcha):
-    ws = create_connection("wss://faucet.rinkeby.io/api")
     request = {
         "url": url,
-        "tier": tier,# 0:3eth/8h, 1:7.5eth/day,2:18.75/3day
+        "tier": tier,  # 0:3eth/8h, 1:7.5eth/day,2:18.75/3day
         "captcha": captcha['code']
     }
 
-    print("Sending...")
-    ws.send(json.dumps(request))
-    print("Receiving...")
-    for i in range(20):
-        result = ws.recv()
-        print(result)
-        result = json.loads(result)
-        if "error" in result.keys():
-            print(result["error"])
-            if "you're a robot" in result["error"]:
-                solver.report(captcha["captchaId"], False)
-            else:
+    ws = create_connection("wss://faucet.rinkeby.io/api")
+    try:
+        print("Sending...")
+        ws.send(json.dumps(request))
+        print("Receiving...")
+        for i in range(20):
+            result = ws.recv()
+            print(result)
+            result = json.loads(result)
+            if "error" in result.keys():
+                print(result["error"])
+                if "you're a robot" in result["error"]:
+                    solver.report(captcha["captchaId"], False)
+                else:
+                    solver.report(captcha["captchaId"], True)
+                break
+            elif "success" in result.keys():
                 solver.report(captcha["captchaId"], True)
-            break
-        elif "success" in result.keys():
-            solver.report(captcha["captchaId"], True)
-            break
+                break
+    except Exception as e:
+        print(e)
     ws.close()
 
 
 def do_daily(config):
+    print("rinkeby test faucet:")
     if "rinkeby" not in config.keys():
         return
     api_key = config["2captcha_apikey"]
