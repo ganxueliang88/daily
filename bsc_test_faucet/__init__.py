@@ -52,8 +52,9 @@ def faucet(address, coin, captcha):
             else:
                 solver.report(captcha["captchaId"], True)
             break
-        elif "succ" in result.keys():
+        elif "success" in result.keys():
             solver.report(captcha["captchaId"], True)
+            break
     ws.close()
 
 
