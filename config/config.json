@@ -9,5 +9,13 @@
   "bsc_test": {
     "eth": "your_eth_address",
     "coin": "BTC"
+  },
+  "rinkeby": {
+    "url": "your_twitter_post_address",
+    "tier": 1
+  },
+  "goerli": {
+    "url": "your_twitter_post_address",
+    "tier": 0
   }
 }
